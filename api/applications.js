@@ -33,18 +33,25 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'PATCH') {
-    // Status update karo: pending -> approved/rejected
-    const { id, status } = req.body
+  // Admin data update karega: name, age, bill_amount, status
+  const { id, name, age, bill_amount, cnic, status } = req.body
 
-    const { data, error } = await supabase
-      .from('applications')
-      .update({ status })
-      .eq('id', id)
-      .select()
+  const updateData = {}
+  if (name) updateData.name = name
+  if (age) updateData.age = parseInt(age)
+  if (bill_amount) updateData.bill_amount = parseInt(bill_amount)
+  if (cnic) updateData.cnic = parseInt(cnic)
+  if (status) updateData.status = status
 
-    if (error) return res.status(500).json({ error: error.message })
-    return res.status(200).json({ success: true, data })
-  }
+  const { data, error } = await supabase
+    .from('applications')
+    .update(updateData)
+    .eq('id', id)
+    .select()
+
+  if (error) return res.status(500).json({ error: error.message })
+  return res.status(200).json({ success: true, data })
+}
 
   // DELETE ka code bhi yahan daal do
   if (req.method === 'DELETE') {
