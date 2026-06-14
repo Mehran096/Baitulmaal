@@ -4,14 +4,22 @@ function SearchBox({ search, setSearch, setPage }) {
   const [input, setInput] = useState(search)
 
   // Debounce: 500ms rukne ke baad search call hogi
-  useEffect(() => {
+//   useEffect(() => {
+//     const timer = setTimeout(() => {
+//       setSearch(input.toLowerCase().trim()) // trim bhi laga diya space hatane ke liye
+//       setPage(1) // search karte hi page 1 pe le jao
+//     }, 500) // 500ms = 0.5 second, 1000 mat likhna
+
+//     return () => clearTimeout(timer) // agar user wapis type kare to timer cancel
+//   }, [input, setSearch, setPage])
+useEffect(() => {
     const timer = setTimeout(() => {
       setSearch(input.toLowerCase().trim()) // trim bhi laga diya space hatane ke liye
-      setPage(1) // search karte hi page 1 pe le jao
+      //setPage(1) // search karte hi page 1 pe le jao
     }, 500) // 500ms = 0.5 second, 1000 mat likhna
 
     return () => clearTimeout(timer) // agar user wapis type kare to timer cancel
-  }, [input, setSearch, setPage])
+  }, [input, setSearch])
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
