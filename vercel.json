@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/bismillah-bachat/api/$1" },
+    { "source": "/(.*)", "destination": "/bismillah-bachat/index.html" }
+  ]
+}
