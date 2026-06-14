@@ -54,7 +54,7 @@ export default function Form() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setResult('Save ho raha hai...')
+    setResult('Save ho raha hai, agar apka data correct hay tu hum apkay buhat jald rabita karengay...')
 
     try {
       const response = await fetch('/api/submit', {
@@ -69,6 +69,11 @@ export default function Form() {
         })
       })
       const data = await response.json()
+       // Yahan 409 check karo bhai
+    if (response.status === 409) {
+      setResult('❌ Error: ' + data.error) // "Ye CNIC pehle hi submit ho chuka hai"
+      return
+    }
       setResult(data.success? '✅ Data save ho gaya' : '❌ Error: ' + data.error)
 
       if(data.success) {
@@ -84,6 +89,7 @@ export default function Form() {
   }
 
   return (
+    <>
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -255,8 +261,44 @@ export default function Form() {
           >
             Submit Karo
           </button>
+          <div style={{
+  marginTop: '15px', 
+  padding: '10px', 
+  background: '#fef3c7', 
+  borderRadius: '8px',
+  fontSize: '13px',
+  color: '#92400e',
+  textAlign: 'center'
+}}>
+  ⚠️ Note: CNIC se sirf 1 dafa apply ho sakta hai. 
+  Ghalti se ghalat data chala gaya? Admin Panel me rabta karein.
+</div>
+<div style={{
+  marginTop: '12px',
+  textAlign: 'center'
+}}>
+  <a 
+    href="https://wa.me/9230012345--?text=Salam%20Admin,%20Mera%20CNIC%20ghalat%20submit%20ho%20gaya%20hai.%20Please%20delete%20kar%20dein."
+    target="_blank"
+    style={{
+      display: 'inline-block',
+      padding: '10px 20px',
+      background: '#25D366',
+      color: 'white',
+      borderRadius: '8px',
+      textDecoration: 'none',
+      fontWeight: 'bold',
+      fontSize: '14px'
+    }}
+  >
+    📱 Admin se WhatsApp pe rabta karein
+  </a>
+</div>
         </form>
+        
       </div>
     </div>
+    
+    </>
   )
 }
